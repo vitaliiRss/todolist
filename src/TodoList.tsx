@@ -8,7 +8,7 @@ type TodoListPropsType = {
   todoListTitle: string
   tasks: Array<TaskType>
   removeTask: (taskId: number) => void
-  changeFilter: (filterValue: FilterValuesType) => void
+  changeFilter: (filter: FilterValuesType) => void
 }
 
 export function TodoList({todoListTitle, tasks, removeTask, changeFilter}: TodoListPropsType) {
