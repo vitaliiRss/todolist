@@ -12,6 +12,12 @@ code {
     monospace;
 }
 
+.App {
+  padding: 30px;
+  display: flex;
+  gap: 50px
+}
+
 .task {
   font-weight: bold;
 }
@@ -22,7 +28,7 @@ code {
 }
 
 .btn-active {
-  background-color: aqua;
+  background-color: aquamarine;
 }
 
 .error {
