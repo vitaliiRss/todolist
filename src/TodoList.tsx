@@ -59,7 +59,7 @@ export function Todolist(props: PropsType) {
   const removeTodolist = () => { props.removeTodolist(props.todolistId) }
 
   return (
-    <div className="App">
+    <div className="todolist">
       <div>
         <h3>{props.title} <button onClick={removeTodolist}>x</button></h3>
         <div>
