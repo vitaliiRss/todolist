@@ -1,4 +1,8 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import IconButton from '@mui/material/IconButton';
+import AddIcon from '@mui/icons-material/Add';
 
 type AddItemFormPropsType = {
   onClick: (title: string) => void
@@ -30,13 +34,19 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
   }
 
   return (
-    <div>
-      <input value={title}
+    <Stack direction="row" alignItems="start" spacing={1}>
+      <TextField
+        id="outlined-basic"
+        label={error ? error : "type something..."}
+        variant="outlined"
+        size="small"
+        error={!!error}
         onChange={onChangeHandler}
         onKeyDown={onKeyDownHandler}
-        className={error ? "error" : ""} />
-      <button onClick={addTask}>+</button>
-      {error && <div className="error-message">{error}</div>}
-    </div>
+      />
+      <IconButton aria-label="delete" onClick={addTask}>
+        <AddIcon />
+      </IconButton>
+    </Stack>
   )
 }

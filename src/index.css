@@ -12,23 +12,14 @@ code {
     monospace;
 }
 
-.App {
-  padding: 30px;
-  display: flex;
-  gap: 50px
-}
-
-.task {
+/* .task {
   font-weight: bold;
-}
+  line-height: 34px;
+} */
 
 .task-done {
   opacity: 0.5;
   text-decoration: line-through #000;
-}
-
-.btn-active {
-  background-color: aquamarine;
 }
 
 .error {
