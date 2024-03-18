@@ -16,7 +16,6 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
     if (title.trim() !== "") {
       props.onClick(title.trim());
       setTitle("");
-      console.log(title);
     } else {
       setError("Title is required");
     }
@@ -41,6 +40,7 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
         variant="outlined"
         size="small"
         error={!!error}
+        value={title}
         onChange={onChangeHandler}
         onKeyDown={onKeyDownHandler}
       />

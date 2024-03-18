@@ -40,16 +40,16 @@ export function Todolist(props: PropsType) {
     tasksForTodolist = props.tasks.filter(t => t.isDone);
   }
 
+  const updateTodolist = (newTitle: string) => {
+    props.updateTodolist(props.todolistId, newTitle)
+  }
+
   const addTask = (title: string) => {
     props.addTask(title, props.todolistId)
   }
 
   const updateTask = (taskId: string, newTitle: string) => {
     props.updateTask(props.todolistId, taskId, newTitle)
-  }
-
-  const updateTodolist = (newTitle: string) => {
-    props.updateTodolist(props.todolistId, newTitle)
   }
 
   const onClickHandlerAll = () => { props.changeFilter(props.todolistId, "all") }
@@ -69,11 +69,10 @@ export function Todolist(props: PropsType) {
           {tasksForTodolist.map((task) => {
             const onRemoveHandler = () => props.removeTask(props.todolistId, task.id)
             const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => props.changeTaskStatus(props.todolistId, task.id, event.currentTarget.checked)
-            const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
             return (
               <Stack direction="row" alignItems="center" spacing={1} key={task.id}>
-                <Checkbox {...label} defaultChecked checked={task.isDone} onChange={onChangeHandler} />
+                <Checkbox checked={task.isDone} onChange={onChangeHandler} />
                 <EditableSpan oldTitle={task.title} isDone={task.isDone} callBack={(newTitle) => updateTask(task.id, newTitle)} />
                 <IconButton onClick={onRemoveHandler} aria-label="delete" size="small"><DeleteIcon /></IconButton>
               </Stack>
