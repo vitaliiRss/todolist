@@ -7,7 +7,7 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { addEmptyArrayTasksAC, addTaskAC, changeTaskStatusAC, removeArrayTasksAC, removeTaskAC, tasksReducer, updateTaskAC } from "./tasksReducer";
-import { addTodolistAC, changeFilterAC, removeTodolistAC, todolistReducer, updateTodolistAC } from "./todolistReducer";
+import { addTodolistAC, changeFilterAC, removeTodolistAC, todolistsReducer, updateTodolistAC } from "./todolistsReducer";
 
 export type FilterValuesType = "all" | "active" | "completed";
 
@@ -25,7 +25,7 @@ function App() {
   let todolistID1 = v1();
   let todolistID2 = v1();
 
-  let [todolists, dispatchTodolists] = useReducer(todolistReducer, [
+  let [todolists, dispatchTodolists] = useReducer(todolistsReducer, [
     { id: todolistID1, title: 'What to learn', filter: 'all' },
     { id: todolistID2, title: 'What to buy', filter: 'all' },
   ])

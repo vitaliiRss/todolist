@@ -3,7 +3,7 @@ import { FilterValuesType, TodolistsType } from "./App";
 
 type TodolistReducerType = AddTodolistACType | RemoveTodolistACType | UpdateTodolistACType | ChangeFilterACType
 
-export const todolistReducer = (state: TodolistsType[], action: TodolistReducerType): TodolistsType[] => {
+export const todolistsReducer = (state: TodolistsType[], action: TodolistReducerType): TodolistsType[] => {
   switch (action.type) {
     case "ADD-TODOLIST": {
       return [...state, { id: action.payload.todolistId, title: action.payload.title, filter: 'all' }]
@@ -68,4 +68,3 @@ export const changeFilterAC = (todolistId: string, value: FilterValuesType) => {
     }
   } as const
 }
-

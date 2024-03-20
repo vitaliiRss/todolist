@@ -21,8 +21,11 @@ export const tasksReducer = (state: TasksType, action: TaskReducerType): TasksTy
       return { ...state, [action.payload.todolistId]: [] }
     }
     case "REMOVE-ARRAY-TASKS": {
-      delete state[action.payload.todolistId]
-      return state
+      const copyState = { ...state }
+      delete copyState[action.payload.todolistId]
+      return copyState
+      // delete state[action.payload.todolistId]
+      // return state
     }
     default:
       return state
