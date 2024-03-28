@@ -6,18 +6,18 @@ import ButtonAppBar from "./ButtonAppBar";
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import { addEmptyArrayTasksAC, addTaskAC, changeTaskStatusAC, removeArrayTasksAC, removeTaskAC, tasksReducer, updateTaskAC } from "./tasksReducer";
-import { addTodolistAC, changeFilterAC, removeTodolistAC, todolistsReducer, updateTodolistAC } from "./todolistsReducer";
+import { tasksReducer, addTaskAC, removeTaskAC, changeTaskStatusAC, changeTaskTitleAC } from "./state/tasks-reducer";
+import { todolistsReducer, addTodolistAC, removeTodolistAC, ChangeTodolistTitleAC, ChangeTodolistFilterAC } from "./state/todolists-reducer";
 
 export type FilterValuesType = "all" | "active" | "completed";
 
-export type TodolistsType = {
+export type TodolistType = {
   id: string
   title: string
   filter: FilterValuesType
 }
 
-export type TasksType = {
+export type TasksStateType = {
   [key: string]: TaskType[]
 }
 
@@ -47,6 +47,27 @@ function App() {
     ]
   });
 
+  // Todolist scope
+  const addTodolist = (title: string) => {
+    const action = addTodolistAC(title);
+    dispatchTodolists(action)
+    dispatchTasks(action)
+  }
+
+  const removeTodolist = (todolistId: string) => {
+    dispatchTodolists(removeTodolistAC(todolistId))
+    dispatchTasks(removeTodolistAC(todolistId))
+  }
+
+  const changeTodolistFilter = (todolistId: string, value: FilterValuesType) => {
+    dispatchTodolists(ChangeTodolistFilterAC(todolistId, value))
+  }
+
+  const changeTodolistTitle = (todolistId: string, title: string) => {
+    dispatchTodolists(ChangeTodolistTitleAC(todolistId, title))
+  }
+
+  // Task scope
   const addTask = (title: string, todolistId: string) => {
     dispatchTasks(addTaskAC(title, todolistId))
   }
@@ -59,27 +80,8 @@ function App() {
     dispatchTasks(changeTaskStatusAC(todolistId, taskId, isDone))
   }
 
-  const updateTask = (todolistId: string, taskId: string, title: string) => {
-    dispatchTasks(updateTaskAC(todolistId, taskId, title))
-  }
-
-  const addTodolist = (title: string) => {
-    const todolistId = v1();
-    dispatchTodolists(addTodolistAC(title, todolistId))
-    dispatchTasks(addEmptyArrayTasksAC(todolistId))
-  }
-
-  const removeTodolist = (todolistId: string) => {
-    dispatchTodolists(removeTodolistAC(todolistId))
-    dispatchTasks(removeArrayTasksAC(todolistId))
-  }
-
-  const updateTodolist = (todolistId: string, title: string) => {
-    dispatchTodolists(updateTodolistAC(todolistId, title))
-  }
-
-  const changeFilter = (todolistId: string, value: FilterValuesType) => {
-    dispatchTodolists(changeFilterAC(todolistId, value))
+  const changeTaskTitle = (todolistId: string, taskId: string, title: string) => {
+    dispatchTasks(changeTaskTitleAC(todolistId, taskId, title))
   }
 
   return (
@@ -102,13 +104,15 @@ function App() {
                     filter={todolist.filter}
                     title={todolist.title}
                     tasks={tasks[todolist.id]}
+                    // Todolist scope
                     removeTodolist={removeTodolist}
-                    removeTask={removeTask}
+                    changeTodolistFilter={changeTodolistFilter}
+                    changeTodolistTitle={changeTodolistTitle}
+                    // Task scope
                     addTask={addTask}
+                    removeTask={removeTask}
                     changeTaskStatus={changeTaskStatus}
-                    changeFilter={changeFilter}
-                    updateTask={updateTask}
-                    updateTodolist={updateTodolist}
+                    changeTaskTitle={changeTaskTitle}
                   />
                 </Paper>
               </Grid>
