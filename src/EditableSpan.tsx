@@ -1,12 +1,12 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent, memo, useState } from 'react'
 
 type EditableSpanPropsType = {
   oldTitle: string
   isDone?: boolean
-  callBack: (newTitle: string) => void
+  onClick: (newTitle: string) => void
 }
 
-export const EditableSpan = ({ oldTitle, isDone, callBack }: EditableSpanPropsType) => {
+export const EditableSpan = memo(({ oldTitle, isDone, onClick }: EditableSpanPropsType) => {
   const [edit, setEdit] = useState(false)
   const [newTitle, setNewTitle] = useState(oldTitle)
 
@@ -18,7 +18,7 @@ export const EditableSpan = ({ oldTitle, isDone, callBack }: EditableSpanPropsTy
   }
 
   const addTask = () => {
-    callBack(newTitle)
+    onClick(newTitle)
   }
 
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -32,4 +32,4 @@ export const EditableSpan = ({ oldTitle, isDone, callBack }: EditableSpanPropsTy
       :
       <span onDoubleClick={editText} className={isDone ? "task-done task" : "task"}>{oldTitle}</span>
   )
-}
+})

@@ -1,16 +1,16 @@
-import React, { useReducer, } from 'react';
-import { TaskType, Todolist } from "./TodoList";
-import { v1 } from "uuid";
+import React, { useCallback } from 'react';
 import { AddItemForm } from "./AddItemForm";
+import { addTaskAC, removeTaskAC, changeTaskStatusAC, changeTaskTitleAC } from "./state/tasks-reducer";
+import { addTodolistAC, removeTodolistAC, ChangeTodolistTitleAC, ChangeTodolistFilterAC } from "./state/todolists-reducer";
+import { useSelector } from "react-redux";
+import { AppRootStateType } from "./state/store";
+import { useDispatch } from "react-redux";
+import { TaskType, Todolist } from "./Todolist";
 import ButtonAppBar from "./ButtonAppBar";
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import { tasksReducer, addTaskAC, removeTaskAC, changeTaskStatusAC, changeTaskTitleAC } from "./state/tasks-reducer";
-import { todolistsReducer, addTodolistAC, removeTodolistAC, ChangeTodolistTitleAC, ChangeTodolistFilterAC } from "./state/todolists-reducer";
-import { useSelector } from "react-redux";
-import { AppRootStateType } from "./state/store";
-import { useDispatch } from "react-redux";
+import { v1 } from "uuid";
 
 export type FilterValuesType = "all" | "active" | "completed";
 
@@ -25,44 +25,47 @@ export type TasksStateType = {
 }
 
 function App() {
+  let todolistId1 = v1();
+  let todolistId2 = v1();
+
   const todolists = useSelector<AppRootStateType, TodolistType[]>(state => state.todolists)
   const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
 
   const dispatch = useDispatch()
 
   // Todolist scope
-  const addTodolist = (title: string) => {
+  const addTodolist = useCallback((title: string) => {
     dispatch(addTodolistAC(title))
-  }
+  }, [dispatch])
 
-  const removeTodolist = (todolistId: string) => {
+  const removeTodolist = useCallback((todolistId: string) => {
     dispatch(removeTodolistAC(todolistId))
-  }
+  }, [dispatch])
 
-  const changeTodolistFilter = (todolistId: string, value: FilterValuesType) => {
+  const changeTodolistFilter = useCallback((todolistId: string, value: FilterValuesType) => {
     dispatch(ChangeTodolistFilterAC(todolistId, value))
-  }
+  }, [dispatch])
 
-  const changeTodolistTitle = (todolistId: string, title: string) => {
+  const changeTodolistTitle = useCallback((todolistId: string, title: string) => {
     dispatch(ChangeTodolistTitleAC(todolistId, title))
-  }
+  }, [dispatch])
 
   // Task scope
-  const addTask = (title: string, todolistId: string) => {
+  const addTask = useCallback((title: string, todolistId: string) => {
     dispatch(addTaskAC(title, todolistId))
-  }
+  }, [dispatch])
 
-  const removeTask = (todolistId: string, taskId: string) => {
+  const removeTask = useCallback((todolistId: string, taskId: string) => {
     dispatch(removeTaskAC(todolistId, taskId))
-  }
+  }, [dispatch])
 
-  const changeTaskStatus = (todolistId: string, taskId: string, isDone: boolean) => {
+  const changeTaskStatus = useCallback((todolistId: string, taskId: string, isDone: boolean) => {
     dispatch(changeTaskStatusAC(todolistId, taskId, isDone))
-  }
+  }, [dispatch])
 
-  const changeTaskTitle = (todolistId: string, taskId: string, title: string) => {
+  const changeTaskTitle = useCallback((todolistId: string, taskId: string, title: string) => {
     dispatch(changeTaskTitleAC(todolistId, taskId, title))
-  }
+  }, [dispatch])
 
   return (
     <div className="App">
@@ -70,7 +73,7 @@ function App() {
       <Container maxWidth="xl">
         <Grid container >
           <Grid item my={4}>
-            <AddItemForm onClick={addTodolist} />
+            <AddItemForm onClick={addTodolist} id={v1()} />
           </Grid>
         </Grid>
         <Grid container spacing={3}>
@@ -79,7 +82,6 @@ function App() {
               <Grid item key={todolist.id}>
                 <Paper sx={{ p: 3 }} elevation={3}>
                   <Todolist
-                    key={todolist.id}
                     todolistId={todolist.id}
                     filter={todolist.filter}
                     title={todolist.title}

@@ -1,5 +1,5 @@
 import React, { useReducer, } from 'react';
-import { TaskType, Todolist } from "./TodoList";
+import { TaskType, Todolist } from "./Todolist";
 import { v1 } from "uuid";
 import { AddItemForm } from "./AddItemForm";
 import ButtonAppBar from "./ButtonAppBar";
@@ -91,7 +91,7 @@ function App() {
       <Container maxWidth="xl">
         <Grid container >
           <Grid item my={4}>
-            <AddItemForm onClick={addTodolist} />
+            <AddItemForm onClick={addTodolist} id={v1()} />
           </Grid>
         </Grid>
         <Grid container spacing={3}>

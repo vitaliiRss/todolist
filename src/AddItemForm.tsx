@@ -1,4 +1,4 @@
-import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
+import React, { ChangeEvent, KeyboardEvent, memo, useState } from 'react'
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
@@ -6,9 +6,10 @@ import AddIcon from '@mui/icons-material/Add';
 
 type AddItemFormPropsType = {
   onClick: (title: string) => void
+  id: string
 }
 
-export const AddItemForm = (props: AddItemFormPropsType) => {
+export const AddItemForm = memo((props: AddItemFormPropsType) => {
   let [title, setTitle] = useState("")
   let [error, setError] = useState<string | null>(null)
 
@@ -26,16 +27,14 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
   }
 
   const onKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-    setError(null);
-    if (event.key === "Enter") {
-      addItem()
-    }
+    if (error) setError(null);
+    if (event.key === "Enter") addItem()
   }
 
   return (
     <Stack direction="row" alignItems="start" spacing={1}>
       <TextField
-        id="outlined-basic"
+        id={props.id}
         label={error ? error : "type something..."}
         variant="outlined"
         size="small"
@@ -49,4 +48,4 @@ export const AddItemForm = (props: AddItemFormPropsType) => {
       </IconButton>
     </Stack>
   )
-}
+})

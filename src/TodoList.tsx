@@ -1,13 +1,14 @@
-import React, { ChangeEvent } from 'react';
+import React, { memo, useCallback } from 'react';
 import { FilterValuesType } from "./App";
 import { AddItemForm } from "./AddItemForm";
 import { EditableSpan } from "./EditableSpan";
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Box from '@mui/material/Box';
-import Checkbox from '@mui/material/Checkbox';
+import { Task } from "./Task";
+import { ButtonContainer } from "./ButtonContainer";
+import { v1 } from "uuid";
 
 export type TaskType = {
   id: string
@@ -19,7 +20,7 @@ type PropsType = {
   todolistId: string
   filter: FilterValuesType
   title: string
-  tasks: TaskType[]
+  tasks: Array<TaskType>
   removeTodolist: (todolistId: string) => void
   changeTodolistFilter: (todolistId: string, value: FilterValuesType) => void
   changeTodolistTitle: (todolistId: string, newTitle: string) => void
@@ -29,7 +30,25 @@ type PropsType = {
   changeTaskTitle: (todolistId: string, taskId: string, newTitle: string) => void
 }
 
-export function Todolist(props: PropsType) {
+export const Todolist = memo((props: PropsType) => {
+  console.log('Todolist')
+
+  const removeTodolist = useCallback(() => {
+    props.removeTodolist(props.todolistId)
+  }, [props.removeTodolist, props.todolistId])
+
+  const changeTodolistTitle = useCallback((newTitle: string) => {
+    props.changeTodolistTitle(props.todolistId, newTitle)
+  }, [props.changeTodolistTitle, props.todolistId])
+
+  const addTask = useCallback((title: string) => {
+    props.addTask(title, props.todolistId)
+  }, [props.addTask, props.todolistId])
+
+  const onClickHandlerAll = useCallback(() => { props.changeTodolistFilter(props.todolistId, "all") }, [props.changeTodolistFilter, props.todolistId]);
+  const onClickHandlerActive = useCallback(() => { props.changeTodolistFilter(props.todolistId, "active") }, [props.changeTodolistFilter, props.todolistId]);
+  const onClickHandlerCompleted = useCallback(() => { props.changeTodolistFilter(props.todolistId, "completed") }, [props.changeTodolistFilter, props.todolistId]);
+
   let tasksForTodolist = props.tasks
 
   if (props.filter === "active") {
@@ -40,72 +59,36 @@ export function Todolist(props: PropsType) {
     tasksForTodolist = props.tasks.filter(t => t.isDone);
   }
 
-  const changeTodolistTitle = (newTitle: string) => {
-    props.changeTodolistTitle(props.todolistId, newTitle)
-  }
-
-  const addTask = (title: string) => {
-    props.addTask(title, props.todolistId)
-  }
-
-  const changeTaskTitle = (taskId: string, newTitle: string) => {
-    props.changeTaskTitle(props.todolistId, taskId, newTitle)
-  }
-
-  const onClickHandlerAll = () => { props.changeTodolistFilter(props.todolistId, "all") }
-  const onClickHandlerActive = () => { props.changeTodolistFilter(props.todolistId, "active") }
-  const onClickHandlerCompleted = () => { props.changeTodolistFilter(props.todolistId, "completed") }
-  const removeTodolist = () => { props.removeTodolist(props.todolistId) }
-
   return (
     <div className="todolist">
       <div>
         <Box gap={1} mb={1} display="flex" alignItems="center">
-          <EditableSpan oldTitle={props.title} callBack={changeTodolistTitle} />
+          <EditableSpan oldTitle={props.title} onClick={changeTodolistTitle} />
           <IconButton onClick={removeTodolist} aria-label="delete" size="small"><DeleteIcon /></IconButton>
         </Box>
-        <AddItemForm onClick={addTask} />
+        <AddItemForm onClick={addTask} id={props.todolistId} />
         <Box my={2}>
           {tasksForTodolist.map((task) => {
-            const onRemoveHandler = () => props.removeTask(props.todolistId, task.id)
-            const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => props.changeTaskStatus(props.todolistId, task.id, event.currentTarget.checked)
-
             return (
-              <Stack direction="row" alignItems="center" spacing={1} key={task.id}>
-                <Checkbox checked={task.isDone} onChange={onChangeHandler} />
-                <EditableSpan oldTitle={task.title} isDone={task.isDone} callBack={(newTitle) => changeTaskTitle(task.id, newTitle)} />
-                <IconButton onClick={onRemoveHandler} aria-label="delete" size="small"><DeleteIcon /></IconButton>
-              </Stack>
+              <Task
+                key={task.id}
+                task={task}
+                todolistId={props.todolistId}
+                removeTask={props.removeTask}
+                changeTaskTitle={props.changeTaskTitle}
+                changeTaskStatus={props.changeTaskStatus}
+              />
             )
           })}
         </Box>
-
         <div>
           <Stack direction="row" spacing={1}>
-            <Button
-              variant={props.filter === "all" ? "contained" : "outlined"}
-              size="small"
-              color="primary"
-              onClick={onClickHandlerAll}>
-              All
-            </Button>
-            <Button
-              variant={props.filter === "active" ? "contained" : "outlined"}
-              size="small"
-              color="primary"
-              onClick={onClickHandlerActive}
-            >Active
-            </Button>
-            <Button
-              variant={props.filter === "completed" ? "contained" : "outlined"}
-              size="small"
-              color="primary"
-              onClick={onClickHandlerCompleted}
-            >Completed
-            </Button>
+            <ButtonContainer variant={props.filter === "all" ? "contained" : "outlined"} size="small" onClick={onClickHandlerAll} title={'All'} />
+            <ButtonContainer variant={props.filter === "active" ? "contained" : "outlined"} size="small" onClick={onClickHandlerActive} title={'Active'} />
+            <ButtonContainer variant={props.filter === "completed" ? "contained" : "outlined"} size="small" onClick={onClickHandlerCompleted} title={'Completed'} />
           </Stack>
         </div>
       </div>
     </div >
   );
-}
+})
