@@ -12,10 +12,10 @@ code {
     monospace;
 }
 
-/* .task {
+.task {
   font-weight: bold;
   line-height: 34px;
-} */
+}
 
 .task-done {
   opacity: 0.5;
