@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 
-type AddItemFormPropsType = {
+export type AddItemFormPropsType = {
   onClick: (title: string) => void
   id: string
 }
