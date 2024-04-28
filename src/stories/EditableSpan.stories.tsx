@@ -1,22 +1,19 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import React, { ChangeEvent, useState } from "react";
+import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 import { EditableSpan } from "../EditableSpan";
+import '../index.css';
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof EditableSpan> = {
   title: 'TODOLISTS/EditableSpan',
   component: EditableSpan,
   parameters: {
-    // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: 'centered',
   },
-  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ['autodocs'],
-  // More on argTypes: https://storybook.js.org/docs/api/argtypes
   args: {
     oldTitle: "HTML",
-    isDone: false,
+    status: 0,
     onClick: fn()
   }
 };
@@ -24,5 +21,32 @@ const meta: Meta<typeof EditableSpan> = {
 export default meta;
 type Story = StoryObj<typeof EditableSpan>;
 
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const EditableSpanStory: Story = {}
+export const EditableSpanStory: Story = {
+  render: (args) => {
+    const [editMode, setEditMode] = useState(false)
+    const [newTitle, setNewTitle] = useState(args.oldTitle)
+
+    const activateEditMode = () => {
+      setEditMode(true);
+      setNewTitle(newTitle);
+    }
+
+    const activateViewMode = () => {
+      setEditMode(false);
+      args.onClick(newTitle);
+    }
+
+    const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+      setNewTitle(event.currentTarget.value)
+    }
+
+    return (
+      editMode
+        ?
+        <input type="text" value={newTitle} onBlur={activateViewMode} onChange={onChangeHandler} autoFocus />
+        :
+        <span onDoubleClick={activateEditMode} className={args.status ? "task-done task" : "task"}>{newTitle}</span>
+
+    )
+  }
+}

@@ -1,5 +1,4 @@
 import React, { memo, useCallback, useMemo } from 'react';
-import { FilterValuesType } from "./App";
 import { AddItemForm } from "./AddItemForm";
 import { EditableSpan } from "./EditableSpan";
 import Stack from '@mui/material/Stack';
@@ -8,13 +7,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Box from '@mui/material/Box';
 import { Task } from "./Task";
 import { ButtonContainer } from "./ButtonContainer";
-import { v1 } from "uuid";
-
-export type TaskType = {
-  id: string
-  title: string
-  isDone: boolean
-}
+import { TaskStatuses, TaskType } from "./api/todolist-api";
+import { FilterValuesType } from "./state/todolists-reducer";
 
 type PropsType = {
   todolistId: string
@@ -26,7 +20,7 @@ type PropsType = {
   changeTodolistTitle: (todolistId: string, newTitle: string) => void
   addTask: (title: string, todolistId: string) => void
   removeTask: (todolistId: string, taskId: string) => void
-  changeTaskStatus: (todolistId: string, taskId: string, isDone: boolean) => void
+  changeTaskStatus: (todolistId: string, taskId: string, status: TaskStatuses) => void
   changeTaskTitle: (todolistId: string, taskId: string, newTitle: string) => void
 }
 
@@ -52,13 +46,12 @@ export const Todolist = memo((props: PropsType) => {
   let tasks = props.tasks
 
   tasks = useMemo(() => {
-    console.log('useMemo')
     if (props.filter === "active") {
-      tasks = tasks.filter(t => !t.isDone);
+      tasks = tasks.filter(t => t.status === TaskStatuses.New);
     }
 
     if (props.filter === "completed") {
-      tasks = tasks.filter(t => t.isDone);
+      tasks = tasks.filter(t => t.status === TaskStatuses.Completed);
     }
 
     return tasks
@@ -71,7 +64,7 @@ export const Todolist = memo((props: PropsType) => {
           <EditableSpan oldTitle={props.title} onClick={changeTodolistTitle} />
           <IconButton onClick={removeTodolist} aria-label="delete" size="small"><DeleteIcon /></IconButton>
         </Box>
-        <AddItemForm onClick={addTask} id={props.todolistId} />
+        <AddItemForm onClick={addTask} />
         <Box my={2}>
           {tasks.map((task) => {
             return (

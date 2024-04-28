@@ -1,21 +1,17 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from "react";
+import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 import { Task } from "../Task";
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof Task> = {
   title: 'TODOLISTS/Task',
   component: Task,
   parameters: {
-    // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: 'centered',
   },
-  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ['autodocs'],
-  // More on argTypes: https://storybook.js.org/docs/api/argtypes
   args: {
-    task: { id: "2121232", title: "JS", isDone: true },
+    task: { id: "1", title: "CSS", status: 0, todoListId: "1", description: null, order: 1, priority: 0, startDate: null, deadline: null, addedDate: "2024-04-26T10:37:45.837" },
     todolistId: "dsdsdasd3",
     removeTask: fn(),
     changeTaskStatus: fn(),
@@ -26,21 +22,20 @@ const meta: Meta<typeof Task> = {
 export default meta;
 type Story = StoryObj<typeof Task>;
 
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const TaskIsDoneStory: Story = {};
-
-export const TaskIsNotDoneStory: Story = {
+export const TaskIsDoneStory: Story = {
   args: {
-    task: { id: "2121232", title: "HTML", isDone: false },
+    task: { id: "2", title: "HTML", status: 2, todoListId: "1", description: null, order: 1, priority: 0, startDate: null, deadline: null, addedDate: "2024-05-26T10:37:45.837" }
   }
 };
+
+export const TaskIsNotDoneStory: Story = {}
 
 export const TaskToggleStory: Story = {
   render: (args) => {
     const [task, setTask] = useState(args.task)
 
     function changeTaskStatus() {
-      setTask({ ...task, isDone: !task.isDone })
+      setTask({ ...task, status: !task.status ? 2 : 0 })
     }
 
     function changeTaskTitle(todolistId: string, taskId: string, title: string) {
@@ -48,7 +43,12 @@ export const TaskToggleStory: Story = {
     }
 
     return (
-      <Task changeTaskStatus={changeTaskStatus} changeTaskTitle={changeTaskTitle} removeTask={args.removeTask} task={task} todolistId={"dsadasd2344"} />
+      <Task
+        changeTaskStatus={changeTaskStatus}
+        changeTaskTitle={changeTaskTitle}
+        removeTask={args.removeTask}
+        task={task}
+        todolistId={"dsadasd2344"} />
     )
   }
 }

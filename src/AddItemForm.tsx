@@ -6,7 +6,6 @@ import AddIcon from '@mui/icons-material/Add';
 
 export type AddItemFormPropsType = {
   onClick: (title: string) => void
-  id: string
 }
 
 export const AddItemForm = memo((props: AddItemFormPropsType) => {
@@ -34,7 +33,6 @@ export const AddItemForm = memo((props: AddItemFormPropsType) => {
   return (
     <Stack direction="row" alignItems="start" spacing={1}>
       <TextField
-        id={props.id}
         label={error ? error : "type something..."}
         variant="outlined"
         size="small"

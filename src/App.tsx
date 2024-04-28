@@ -1,32 +1,21 @@
 import React, { useCallback } from 'react';
 import { AddItemForm } from "./AddItemForm";
 import { addTaskAC, removeTaskAC, changeTaskStatusAC, changeTaskTitleAC } from "./state/tasks-reducer";
-import { addTodolistAC, removeTodolistAC, ChangeTodolistTitleAC, ChangeTodolistFilterAC } from "./state/todolists-reducer";
+import { addTodolistAC, removeTodolistAC, ChangeTodolistTitleAC, ChangeTodolistFilterAC, FilterValuesType } from "./state/todolists-reducer";
 import { useSelector, useDispatch } from "react-redux";
 import { AppRootStateType } from "./state/store";
-import { TaskType, Todolist } from "./Todolist";
 import ButtonAppBar from "./ButtonAppBar";
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import { v1 } from "uuid";
-
-export type FilterValuesType = "all" | "active" | "completed";
-
-export type TodolistType = {
-  id: string
-  title: string
-  filter: FilterValuesType
-}
+import { TaskStatuses, TaskType, TodolistType } from "./api/todolist-api";
+import { Todolist } from "./Todolist";
 
 export type TasksStateType = {
   [key: string]: TaskType[]
 }
 
 function App() {
-  let todolistId1 = v1();
-  let todolistId2 = v1();
-
   const todolists = useSelector<AppRootStateType, TodolistType[]>(state => state.todolists)
   const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
 
@@ -58,8 +47,8 @@ function App() {
     dispatch(removeTaskAC(todolistId, taskId))
   }, [dispatch])
 
-  const changeTaskStatus = useCallback((todolistId: string, taskId: string, isDone: boolean) => {
-    dispatch(changeTaskStatusAC(todolistId, taskId, isDone))
+  const changeTaskStatus = useCallback((todolistId: string, taskId: string, status: TaskStatuses) => {
+    dispatch(changeTaskStatusAC(todolistId, taskId, status))
   }, [dispatch])
 
   const changeTaskTitle = useCallback((todolistId: string, taskId: string, title: string) => {
@@ -72,7 +61,7 @@ function App() {
       <Container maxWidth="xl">
         <Grid container >
           <Grid item my={4}>
-            <AddItemForm onClick={addTodolist} id={v1()} />
+            <AddItemForm onClick={addTodolist} />
           </Grid>
         </Grid>
         <Grid container spacing={3}>

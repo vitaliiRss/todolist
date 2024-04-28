@@ -2,23 +2,22 @@ import React, { ChangeEvent, memo, useState } from 'react'
 
 type EditableSpanPropsType = {
   oldTitle: string
-  isDone?: boolean
+  status?: number
   onClick: (newTitle: string) => void
 }
 
-export const EditableSpan = memo(({ oldTitle, isDone, onClick }: EditableSpanPropsType) => {
-  const [edit, setEdit] = useState(false)
+export const EditableSpan = memo(({ oldTitle, status, onClick }: EditableSpanPropsType) => {
+  const [editMode, setEditMode] = useState(false)
   const [newTitle, setNewTitle] = useState(oldTitle)
 
-  const editText = () => {
-    setEdit(!edit)
-    if (edit) {
-      addTask()
-    }
+  const activateEditMode = () => {
+    setEditMode(true);
+    setNewTitle(oldTitle);
   }
 
-  const addTask = () => {
-    onClick(newTitle)
+  const activateViewMode = () => {
+    setEditMode(false);
+    onClick(newTitle);
   }
 
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -26,10 +25,12 @@ export const EditableSpan = memo(({ oldTitle, isDone, onClick }: EditableSpanPro
   }
 
   return (
-    edit
+    editMode
       ?
-      <input type="text" value={newTitle} onBlur={editText} onChange={onChangeHandler} autoFocus />
+      <input type="text" value={newTitle} onBlur={activateViewMode} onChange={onChangeHandler} autoFocus />
       :
-      <span onDoubleClick={editText} className={isDone ? "task-done task" : "task"}>{oldTitle}</span>
+      <span onDoubleClick={activateEditMode} className={status ? "task-done task" : "task"}>{oldTitle}</span>
   )
 })
+
+
