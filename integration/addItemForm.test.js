@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 describe('addItemForm', () => {
   it('base example, visually looks correct', async () => {
     // APIs from jest-puppeteer

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { UpdateTaskModelType, todolistAPI } from "../api/todolist-api"
+import { UpdateTaskModelType, todolistsAPI } from "../api/todolist-api"
 
 export default {
   title: "API/Task",
@@ -12,7 +12,7 @@ export const GetTasks = () => {
 
     const todolistId = "b67ac3de-87ac-432b-ae66-28d741729e16"
 
-    todolistAPI.getTasks(todolistId).then(response => {
+    todolistsAPI.getTasks(todolistId).then(response => {
       setState(response.data)
     }).catch(error => {
       setError(error.message)
@@ -40,7 +40,7 @@ export const CreateTask = () => {
     const todolistId = "b67ac3de-87ac-432b-ae66-28d741729e16"
     const title = "new task"
 
-    todolistAPI.createTask(todolistId, title).then(response => {
+    todolistsAPI.createTask(todolistId, title).then(response => {
       setState(response.data)
     }).catch(error => {
       setError(error.message)
@@ -76,7 +76,7 @@ export const UpdateTask = () => {
       deadline: null
     }
 
-    todolistAPI.updateTask(todolistId, taskId, model).then(response => {
+    todolistsAPI.updateTask(todolistId, taskId, model).then(response => {
       setState(response.data)
     }).catch(error => {
       setError(error.message)
@@ -102,9 +102,9 @@ export const DeleteTask = () => {
 
   useEffect(() => {
     const todolistId = "b67ac3de-87ac-432b-ae66-28d741729e16"
-    const taskId = "5abad428-ef58-4ab2-ac64-8b1372cacce5"
+    const taskId = "ec1c62e0-3c82-428f-8229-5448ede74e56"
 
-    todolistAPI.deleteTask(todolistId, taskId).then(response => {
+    todolistsAPI.deleteTask(todolistId, taskId).then(response => {
       setState(response.data)
     }).catch(error => {
       setError(error.message)

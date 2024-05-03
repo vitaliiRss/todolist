@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { todolistAPI } from "../api/todolist-api"
+import { todolistsAPI } from "../api/todolist-api"
 
 export default {
   title: "API/Todolist",
@@ -10,7 +10,7 @@ export const GetTodolists = () => {
   const [error, setError] = useState<any>("")
 
   useEffect(() => {
-    todolistAPI.getTodolists().then(response => {
+    todolistsAPI.getTodolists().then(response => {
       setState(response.data)
     }).catch(error => {
       setError(error.message)
@@ -37,7 +37,7 @@ export const CreateTodolist = () => {
   useEffect(() => {
     const title = "test todolist"
 
-    todolistAPI.createTodolist(title).then(response => {
+    todolistsAPI.createTodolist(title).then(response => {
       setState(response.data)
     }).catch(error => {
       setError(error.message)
@@ -64,7 +64,7 @@ export const DeleteTodolist = () => {
   useEffect(() => {
     const todolistId = "8a1a0a84-441d-48e8-b674-438ab68c2b85"
 
-    todolistAPI.deleteTodolist(todolistId).then(response => {
+    todolistsAPI.deleteTodolist(todolistId).then(response => {
       setState(response.data)
     }).catch(error => {
       setError(error.message)
@@ -92,7 +92,7 @@ export const UpdateTodolistTitle = () => {
     const todolistId = "980dc1a6-c651-4c13-9c46-42cdbe6359b3"
     const title = "update test todolist"
 
-    todolistAPI.updateTodolist(todolistId, title).then(response => {
+    todolistsAPI.updateTodolist(todolistId, title).then(response => {
       setState(response.data)
     }).catch(error => {
       setError(error.message)

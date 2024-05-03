@@ -1,58 +1,57 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { AddItemForm } from "./AddItemForm";
-import { addTaskAC, removeTaskAC, changeTaskStatusAC, changeTaskTitleAC } from "./state/tasks-reducer";
-import { addTodolistAC, removeTodolistAC, ChangeTodolistTitleAC, ChangeTodolistFilterAC, FilterValuesType } from "./state/todolists-reducer";
-import { useSelector, useDispatch } from "react-redux";
-import { AppRootStateType } from "./state/store";
+import { addTaskTC, deleteTaskTC, TasksStateType, updateTaskTC } from "./state/tasks-reducer";
+import { FilterValuesType, TodolistDomainType, getTodolistsTC, addTodolistTC, removeTodolistTC, changeTodolistFilterAC, changeTodolistTitleTC } from "./state/todolists-reducer";
+import { useAppDispatch, useAppSelector } from "./state/store";
 import ButtonAppBar from "./ButtonAppBar";
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import { TaskStatuses, TaskType, TodolistType } from "./api/todolist-api";
+import { TaskStatuses } from "./api/todolist-api";
 import { Todolist } from "./Todolist";
 
-export type TasksStateType = {
-  [key: string]: TaskType[]
-}
-
 function App() {
-  const todolists = useSelector<AppRootStateType, TodolistType[]>(state => state.todolists)
-  const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
+  const todolists = useAppSelector<TodolistDomainType[]>(state => state.todolists)
+  const tasks = useAppSelector<TasksStateType>(state => state.tasks)
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(getTodolistsTC())
+  }, [])
 
   // Todolist scope
   const addTodolist = useCallback((title: string) => {
-    dispatch(addTodolistAC(title))
+    dispatch(addTodolistTC(title))
   }, [dispatch])
 
   const removeTodolist = useCallback((todolistId: string) => {
-    dispatch(removeTodolistAC(todolistId))
+    dispatch(removeTodolistTC(todolistId))
   }, [dispatch])
 
   const changeTodolistFilter = useCallback((todolistId: string, value: FilterValuesType) => {
-    dispatch(ChangeTodolistFilterAC(todolistId, value))
+    dispatch(changeTodolistFilterAC(todolistId, value))
   }, [dispatch])
 
   const changeTodolistTitle = useCallback((todolistId: string, title: string) => {
-    dispatch(ChangeTodolistTitleAC(todolistId, title))
+    dispatch(changeTodolistTitleTC(todolistId, title))
   }, [dispatch])
 
   // Task scope
   const addTask = useCallback((title: string, todolistId: string) => {
-    dispatch(addTaskAC(title, todolistId))
+    dispatch(addTaskTC(title, todolistId))
   }, [dispatch])
 
   const removeTask = useCallback((todolistId: string, taskId: string) => {
-    dispatch(removeTaskAC(todolistId, taskId))
+    dispatch(deleteTaskTC(todolistId, taskId))
   }, [dispatch])
 
   const changeTaskStatus = useCallback((todolistId: string, taskId: string, status: TaskStatuses) => {
-    dispatch(changeTaskStatusAC(todolistId, taskId, status))
+    dispatch(updateTaskTC(todolistId, taskId, { status }))
   }, [dispatch])
 
   const changeTaskTitle = useCallback((todolistId: string, taskId: string, title: string) => {
-    dispatch(changeTaskTitleAC(todolistId, taskId, title))
+    dispatch(updateTaskTC(todolistId, taskId, { title }))
   }, [dispatch])
 
   return (

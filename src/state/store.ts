@@ -1,16 +1,21 @@
-import { tasksReducer } from './tasks-reducer';
-import { todolistsReducer } from './todolists-reducer';
-import { combineReducers, compose, legacy_createStore } from 'redux';
+import { AnyAction, applyMiddleware, combineReducers, legacy_createStore } from "redux";
+import { todolistsReducer } from "./todolists-reducer";
+import { tasksReducer } from "./tasks-reducer";
+import thunkMiddleware, { ThunkDispatch } from "redux-thunk";
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 const rootReducer = combineReducers({
-  tasks: tasksReducer,
-  todolists: todolistsReducer
+  todolists: todolistsReducer,
+  tasks: tasksReducer
 })
 
-const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+export const store = legacy_createStore(rootReducer, applyMiddleware(thunkMiddleware))
 
-export const store = legacy_createStore(rootReducer, composeEnhancers());
 export type AppRootStateType = ReturnType<typeof rootReducer>
+export type AppThunkDispatch = ThunkDispatch<AppRootStateType, any, AnyAction>
+
+export const useAppDispatch = () => useDispatch<AppThunkDispatch>()
+export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector
 
 // @ts-ignore
 window.store = store;
