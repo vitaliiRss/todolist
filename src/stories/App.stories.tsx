@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from "react";
 import App from "../App";
-import { ReduxProviderDecorator } from "../state/ReduxProviderDecorator";
 import { Provider } from "react-redux";
 import { store } from "../state/store";
 
@@ -16,8 +15,6 @@ const meta: Meta<typeof App> = {
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ['autodocs'],
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
-  // decorators: [ReduxProviderDecorator]
-  // ReduxProviderDecorator required for proper work with redux
 }
 
 export default meta;

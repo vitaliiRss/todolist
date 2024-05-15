@@ -1,9 +1,11 @@
 import axios, { AxiosResponse } from 'axios'
-import { FilterValuesType } from "../state/todolists-reducer"
 
 const instance = axios.create({
   baseURL: 'https://social-network.samuraijs.com/api/1.1/',
   withCredentials: true,
+  headers: {
+    'API-KEY': 'd85fbee1-9491-4661-ab7f-9f9f33b0f108'
+  }
 })
 
 export type TodolistType = {
@@ -13,11 +15,17 @@ export type TodolistType = {
   order: number
 }
 
-type ResponseType<T = {}> = {
+export type ResponseType<T = {}> = {
   resultCode: 0,
   fieldsErrors: string[]
-  messages: [],
+  messages: string[],
   data: T
+}
+
+export enum ResultCode {
+  SUCCESS = 0,
+  ERROR = 1,
+  RECAPTCHA_ERROR = 10
 }
 
 export enum TaskStatuses {
@@ -74,7 +82,10 @@ export const todolistsAPI = {
     return instance.delete<ResponseType>(`todo-lists/${todolistId}`)
   },
   updateTodolist(todolistId: string, title: string) {
-    return instance.put<ResponseType>(`todo-lists/${todolistId}`, { title })
+    return instance.put<
+      ResponseType,
+      AxiosResponse<ResponseType>,
+      { title: string }>(`todo-lists/${todolistId}`, { title })
   },
   getTasks(todolistId: string) {
     return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`);

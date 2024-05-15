@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from "react";
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { EditableSpan } from "../EditableSpan";
+import { EditableSpan } from "../components/EditableSpan/EditableSpan";
 import '../index.css';
 
 const meta: Meta<typeof EditableSpan> = {

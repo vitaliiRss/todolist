@@ -227,7 +227,7 @@ test('property with todolistId should be deleted', () => {
 
   expect(keys.length).toBe(1);
   expect(endState["todolistId2"]).not.toBeDefined();
-});
+})
 
 test('empty arrays should be added when we set todolists', () => {
   const action = setTodolistsAC([
@@ -242,7 +242,7 @@ test('empty arrays should be added when we set todolists', () => {
   expect(keys.length).toBe(2)
   expect(endState['1']).toBeDefined()
   expect(endState['2']).toBeDefined()
-});
+})
 
 test('tasks should be added for todolist', () => {
   const action = setTasksAC('todolistId3', [
@@ -258,4 +258,4 @@ test('tasks should be added for todolist', () => {
   expect(endState['todolistId3'].length).toBe(2)
   expect(endState['todolistId3'][0].title).toBe('REACT')
   expect(endState['todolistId3'][1].title).toBe('REDUX')
-});
+})

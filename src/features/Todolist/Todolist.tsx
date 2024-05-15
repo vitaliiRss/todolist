@@ -1,19 +1,21 @@
 import React, { memo, useCallback, useEffect, useMemo } from 'react';
-import { AddItemForm } from "./AddItemForm";
-import { EditableSpan } from "./EditableSpan";
+import { AddItemForm } from "../../components/AddItemForm/AddItemForm";
+import { EditableSpan } from "../../components/EditableSpan/EditableSpan";
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Box from '@mui/material/Box';
-import { Task } from "./Task";
-import { ButtonContainer } from "./ButtonContainer";
-import { TaskStatuses, TaskType } from "./api/todolist-api";
-import { FilterValuesType } from "./state/todolists-reducer";
-import { getTasksTC } from "./state/tasks-reducer";
-import { useAppDispatch } from "./state/store";
+import { Task } from "../Task/Task";
+import { ButtonContainer } from "../../components/ButtonContainer/ButtonContainer";
+import { TaskStatuses, TaskType } from "../../api/todolist-api";
+import { FilterValuesType } from "../../state/todolists-reducer";
+import { fetchTasksTC } from "../../state/tasks-reducer";
+import { useAppDispatch } from "../../state/store";
+import { RequestStatusType } from "../../state/app-reducer";
 
 type PropsType = {
   todolistId: string
+  entityStatus: RequestStatusType
   filter: FilterValuesType
   title: string
   tasks: Array<TaskType>
@@ -31,7 +33,7 @@ export const Todolist = memo((props: PropsType) => {
 
   const dispatch = useAppDispatch()
   useEffect(() => {
-    dispatch(getTasksTC(props.todolistId))
+    dispatch(fetchTasksTC(props.todolistId))
   }, [])
 
   const removeTodolist = useCallback(() => {
@@ -69,9 +71,11 @@ export const Todolist = memo((props: PropsType) => {
       <div>
         <Box gap={1} mb={1} display="flex" alignItems="center">
           <EditableSpan oldTitle={props.title} onClick={changeTodolistTitle} />
-          <IconButton onClick={removeTodolist} aria-label="delete" size="small"><DeleteIcon /></IconButton>
+          <IconButton onClick={removeTodolist} aria-label="delete" size="small" disabled={props.entityStatus === 'loading'}>
+            <DeleteIcon />
+          </IconButton>
         </Box>
-        <AddItemForm onClick={addTask} />
+        <AddItemForm disable={props.entityStatus === 'loading'} onClick={addTask} />
         <Box my={2}>
           {tasks.map((task) => {
             return (

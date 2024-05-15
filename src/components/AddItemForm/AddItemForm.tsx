@@ -6,6 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 
 export type AddItemFormPropsType = {
   onClick: (title: string) => void
+  disable?: boolean
 }
 
 export const AddItemForm = memo((props: AddItemFormPropsType) => {
@@ -36,12 +37,13 @@ export const AddItemForm = memo((props: AddItemFormPropsType) => {
         label={error ? error : "type something..."}
         variant="outlined"
         size="small"
+        disabled={props.disable}
         error={!!error}
         value={title}
         onChange={onChangeHandler}
         onKeyDown={onKeyDownHandler}
       />
-      <IconButton aria-label="delete" onClick={addItem}>
+      <IconButton aria-label="delete" onClick={addItem} disabled={props.disable}>
         <AddIcon />
       </IconButton>
     </Stack>

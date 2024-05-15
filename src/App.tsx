@@ -1,23 +1,26 @@
 import React, { useCallback, useEffect } from 'react';
-import { AddItemForm } from "./AddItemForm";
+import { AddItemForm } from "./components/AddItemForm/AddItemForm";
 import { addTaskTC, deleteTaskTC, TasksStateType, updateTaskTC } from "./state/tasks-reducer";
-import { FilterValuesType, TodolistDomainType, getTodolistsTC, addTodolistTC, removeTodolistTC, changeTodolistFilterAC, changeTodolistTitleTC } from "./state/todolists-reducer";
+import { FilterValuesType, TodolistDomainType, fetchTodolistsTC, addTodolistTC, removeTodolistTC, changeTodolistFilterAC, changeTodolistTitleTC } from "./state/todolists-reducer";
 import { useAppDispatch, useAppSelector } from "./state/store";
-import ButtonAppBar from "./ButtonAppBar";
+import ButtonAppBar from "./components/ButtonAppBar/ButtonAppBar";
+import LinearProgress from '@mui/material/LinearProgress';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { TaskStatuses } from "./api/todolist-api";
-import { Todolist } from "./Todolist";
+import { Todolist } from "./features/Todolist/Todolist";
+import CustomizedSnackbars from "./components/ErrorSnackbar/ErrorSnackbar";
 
 function App() {
   const todolists = useAppSelector<TodolistDomainType[]>(state => state.todolists)
   const tasks = useAppSelector<TasksStateType>(state => state.tasks)
+  const status = useAppSelector(state => state.app.status);
 
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(getTodolistsTC())
+    dispatch(fetchTodolistsTC())
   }, [])
 
   // Todolist scope
@@ -56,7 +59,9 @@ function App() {
 
   return (
     <div className="App">
+      <CustomizedSnackbars />
       <ButtonAppBar />
+      {status === 'loading' && <LinearProgress color="secondary" />}
       <Container maxWidth="xl">
         <Grid container >
           <Grid item my={4}>
@@ -70,6 +75,7 @@ function App() {
                 <Paper sx={{ p: 3 }} elevation={3}>
                   <Todolist
                     todolistId={todolist.id}
+                    entityStatus={todolist.entityStatus}
                     filter={todolist.filter}
                     title={todolist.title}
                     tasks={tasks[todolist.id]}

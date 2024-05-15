@@ -9,6 +9,7 @@ test('ids should be equals', () => {
     id: "todolistId3",
     title: "New todolist",
     filter: 'all',
+    entityStatus: "idle",
     order: 2,
     addedDate: "2024-09-25T20:15:55.76"
   }
