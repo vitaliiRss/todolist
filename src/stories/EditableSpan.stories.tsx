@@ -1,16 +1,16 @@
 import React, { ChangeEvent, useState } from "react";
-import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
+import type { Meta, StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
 import { EditableSpan } from "../components/EditableSpan/EditableSpan";
-import '../index.css';
+import "../index.css";
 
 const meta: Meta<typeof EditableSpan> = {
-  title: 'TODOLISTS/EditableSpan',
+  title: "TODOLISTS/EditableSpan",
   component: EditableSpan,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   args: {
     oldTitle: "HTML",
     status: 0,

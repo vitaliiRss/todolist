@@ -1,9 +1,9 @@
-import React, { ChangeEvent, memo } from 'react';
+import React, { ChangeEvent, memo } from "react";
 import { EditableSpan } from "../../components/EditableSpan/EditableSpan";
-import Stack from '@mui/material/Stack';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
-import Checkbox from '@mui/material/Checkbox';
+import Stack from "@mui/material/Stack";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Checkbox from "@mui/material/Checkbox";
 import { TaskStatuses, TaskType } from "../../api/todolist-api";
 
 type TaskpropsType = {
@@ -15,7 +15,7 @@ type TaskpropsType = {
 }
 
 export const Task = memo((props: TaskpropsType) => {
-  console.log('Task')
+  console.log("Task")
   const onClickHandler = () => {
     props.removeTask(props.todolistId, props.task.id)
   }

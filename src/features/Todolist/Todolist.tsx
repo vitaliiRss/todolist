@@ -1,17 +1,17 @@
-import React, { memo, useCallback, useEffect, useMemo } from 'react';
+import React, { memo, useCallback, useEffect, useMemo } from "react";
 import { AddItemForm } from "../../components/AddItemForm/AddItemForm";
 import { EditableSpan } from "../../components/EditableSpan/EditableSpan";
-import Stack from '@mui/material/Stack';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
-import Box from '@mui/material/Box';
+import Stack from "@mui/material/Stack";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Box from "@mui/material/Box";
 import { Task } from "../Task/Task";
 import { ButtonContainer } from "../../components/ButtonContainer/ButtonContainer";
 import { TaskStatuses, TaskType } from "../../api/todolist-api";
 import { FilterValuesType } from "../../state/todolists-reducer";
 import { fetchTasksTC } from "../../state/tasks-reducer";
-import { useAppDispatch } from "../../state/store";
 import { RequestStatusType } from "../../state/app-reducer";
+import { useAppDispatch } from "../../store/store";
 
 type PropsType = {
   todolistId: string
@@ -29,7 +29,7 @@ type PropsType = {
 }
 
 export const Todolist = memo((props: PropsType) => {
-  console.log('Todolist')
+  console.log("Todolist")
 
   const dispatch = useAppDispatch()
   useEffect(() => {
@@ -71,11 +71,11 @@ export const Todolist = memo((props: PropsType) => {
       <div>
         <Box gap={1} mb={1} display="flex" alignItems="center">
           <EditableSpan oldTitle={props.title} onClick={changeTodolistTitle} />
-          <IconButton onClick={removeTodolist} aria-label="delete" size="small" disabled={props.entityStatus === 'loading'}>
+          <IconButton onClick={removeTodolist} aria-label="delete" size="small" disabled={props.entityStatus === "loading"}>
             <DeleteIcon />
           </IconButton>
         </Box>
-        <AddItemForm disable={props.entityStatus === 'loading'} onClick={addTask} />
+        <AddItemForm disable={props.entityStatus === "loading"} onClick={addTask} />
         <Box my={2}>
           {tasks.map((task) => {
             return (
@@ -92,9 +92,9 @@ export const Todolist = memo((props: PropsType) => {
         </Box>
         <div>
           <Stack direction="row" spacing={1}>
-            <ButtonContainer variant={props.filter === "all" ? "contained" : "outlined"} size="small" onClick={onClickHandlerAll} title={'All'} />
-            <ButtonContainer variant={props.filter === "active" ? "contained" : "outlined"} size="small" onClick={onClickHandlerActive} title={'Active'} />
-            <ButtonContainer variant={props.filter === "completed" ? "contained" : "outlined"} size="small" onClick={onClickHandlerCompleted} title={'Completed'} />
+            <ButtonContainer variant={props.filter === "all" ? "contained" : "outlined"} size="small" onClick={onClickHandlerAll} title={"All"} />
+            <ButtonContainer variant={props.filter === "active" ? "contained" : "outlined"} size="small" onClick={onClickHandlerActive} title={"Active"} />
+            <ButtonContainer variant={props.filter === "completed" ? "contained" : "outlined"} size="small" onClick={onClickHandlerCompleted} title={"Completed"} />
           </Stack>
         </div>
       </div>

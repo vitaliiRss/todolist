@@ -29,3 +29,11 @@ code {
 .error-message {
   color: red;
 }
+
+.error-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+}

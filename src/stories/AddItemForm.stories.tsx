@@ -1,23 +1,23 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
-import { action } from '@storybook/addon-actions'
+import type { Meta, StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
+import { action } from "@storybook/addon-actions"
 import { AddItemForm, AddItemFormPropsType } from "../components/AddItemForm/AddItemForm";
 import React, { ChangeEvent, KeyboardEvent, memo, useState } from "react";
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import IconButton from '@mui/material/IconButton';
-import AddIcon from '@mui/icons-material/Add';
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import IconButton from "@mui/material/IconButton";
+import AddIcon from "@mui/icons-material/Add";
 
 const meta: Meta<typeof AddItemForm> = {
-  title: 'TODOLISTS/AddItemForm',
+  title: "TODOLISTS/AddItemForm",
   component: AddItemForm,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     onClick: {
-      description: 'Button clicked inside form'
+      description: "Button clicked inside form"
     },
   },
   args: { onClick: fn() },

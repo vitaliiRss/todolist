@@ -1,5 +1,5 @@
-import React, { memo } from 'react';
-import Button, { ButtonProps } from '@mui/material/Button';
+import React, { memo } from "react";
+import Button, { ButtonProps } from "@mui/material/Button";
 
 type MyButtonPropsType = {} & ButtonProps
 

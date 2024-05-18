@@ -1,14 +1,14 @@
-import { TasksStateType, tasksReducer } from "./tasks-reducer";
-import { todolistsReducer, addTodolistAC, TodolistDomainType } from "./todolists-reducer";
+import { TasksStateType, tasksReducer } from "../state/tasks-reducer";
+import { TodolistDomainType, addTodolistAC, todolistsReducer } from "../state/todolists-reducer";
 
-test('ids should be equals', () => {
+test("ids should be equals", () => {
   const startTasksState: TasksStateType = {};
   const startTodolistsState: TodolistDomainType[] = [];
 
   const newTodolist: TodolistDomainType = {
     id: "todolistId3",
     title: "New todolist",
-    filter: 'all',
+    filter: "all",
     entityStatus: "idle",
     order: 2,
     addedDate: "2024-09-25T20:15:55.76"

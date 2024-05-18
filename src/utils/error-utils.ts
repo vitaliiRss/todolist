@@ -6,14 +6,14 @@ export const handleServerAppError = <D>(data: ResponseType<D>, dispatch: Dispatc
   if (data.messages.length) {
     dispatch(setAppErrorAC(data.messages[0]))
   } else {
-    dispatch(setAppErrorAC('Some error occurred'))
+    dispatch(setAppErrorAC("Some error occurred"))
   }
-  dispatch(setAppStatusAC('failed'))
+  dispatch(setAppStatusAC("failed"))
 }
 
 export const handleServerNetworkError = <T>(error: T, dispatch: Dispatch<SetErrorACType | SetAppStatusACType>) => {
   dispatch(setAppErrorAC((error as Error).message))
-  dispatch(setAppStatusAC('failed'))
+  dispatch(setAppStatusAC("failed"))
 }
 function setAppErrorAC(arg0: any): any {
   throw new Error("Function not implemented.")
