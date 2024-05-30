@@ -58,12 +58,12 @@ export type TaskType = {
 }
 
 export type UpdateTaskModelType = {
-  title: string
-  description: string | null
-  status: TaskStatuses
-  priority: TaskPriorities
-  startDate: string | null
-  deadline: string | null
+  title?: string
+  description?: string | null
+  status?: TaskStatuses
+  priority?: TaskPriorities
+  startDate?: string | null
+  deadline?: string | null
 }
 
 type GetTasksResponse = {
@@ -114,5 +114,5 @@ export const authAPI = {
   },
   logOut: () => {
     return instance.delete<ResponseType>("/auth/login")
-  },
+  }
 }

@@ -1,25 +1,28 @@
 import React, { useCallback, useEffect } from "react"
-import { TasksStateType, addTaskTC, deleteTaskTC, updateTaskTC } from "../../state/tasks-reducer"
-import { FilterValuesType, TodolistDomainType, addTodolistTC, changeTodolistFilterAC, changeTodolistTitleTC, fetchTodolistsTC, removeTodolistTC } from "../../state/todolists-reducer"
-import { useAppDispatch, useAppSelector } from "../../store/store"
-import { TaskStatuses } from "../../api/todolist-api"
+import { useSelector } from "react-redux"
 import { Navigate } from "react-router-dom"
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
+import { useAppDispatch } from "../../store/store"
+import { addTaskTC, deleteTaskTC, selectTasks, updateTaskTC } from "../../state/tasks-slice"
+import { TaskStatuses } from "../../api/todolist-api"
+import { selectIsLoggedIn } from "../../state/auth-slice"
+import { FilterValuesType, addTodolistTC, changeTodolistTitleTC, fetchTodolistsTC, removeTodolistTC, selectTodolists, todolistsActions} from "../../state/todolists-slice"
+import Grid from "@mui/material/Grid"
+import Paper from "@mui/material/Paper"
 import { AddItemForm } from "../../components/AddItemForm/AddItemForm"
 import { Todolist } from "../Todolist/Todolist"
 
 export const Todolists = () => {
-  const todolists = useAppSelector<TodolistDomainType[]>(state => state.todolists)
-  const tasks = useAppSelector<TasksStateType>(state => state.tasks)
-  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
-
   const dispatch = useAppDispatch()
+  const todolists = useSelector(selectTodolists)
+  const tasks = useSelector(selectTasks)
+  const isLoggedIn = useSelector(selectIsLoggedIn)
 
   useEffect(() => {
-    if (!isLoggedIn) return
+    if (!isLoggedIn) {
+      return
+    }
     dispatch(fetchTodolistsTC())
-  }, [dispatch, isLoggedIn])
+  }, [])
 
   // Todolist scope
   const addTodolist = useCallback((title: string) => {
@@ -30,8 +33,8 @@ export const Todolists = () => {
     dispatch(removeTodolistTC(todolistId))
   }, [dispatch])
 
-  const changeTodolistFilter = useCallback((todolistId: string, value: FilterValuesType) => {
-    dispatch(changeTodolistFilterAC(todolistId, value))
+  const changeTodolistFilter = useCallback((todolistId: string, filter: FilterValuesType) => {
+    dispatch(todolistsActions.changeTodolistFilter({ todolistId, filter }))
   }, [dispatch])
 
   const changeTodolistTitle = useCallback((todolistId: string, title: string) => {
@@ -61,7 +64,7 @@ export const Todolists = () => {
 
   return (
     <>
-      <Grid container >
+      <Grid container>
         <Grid item my={4}>
           <AddItemForm onClick={addTodolist} />
         </Grid>

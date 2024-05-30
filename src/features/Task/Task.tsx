@@ -15,7 +15,8 @@ type TaskpropsType = {
 }
 
 export const Task = memo((props: TaskpropsType) => {
-  console.log("Task")
+  // console.log("Task")
+
   const onClickHandler = () => {
     props.removeTask(props.todolistId, props.task.id)
   }

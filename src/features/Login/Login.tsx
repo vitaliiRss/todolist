@@ -1,4 +1,9 @@
 import React from "react"
+import { useSelector } from "react-redux"
+import { Navigate } from "react-router-dom"
+import { useAppDispatch } from "../../store/store"
+import { loginTC, selectIsLoggedIn } from "../../state/auth-slice"
+import { useFormik } from "formik"
 import Grid from "@mui/material/Grid"
 import Checkbox from "@mui/material/Checkbox"
 import FormControl from "@mui/material/FormControl"
@@ -7,10 +12,6 @@ import FormGroup from "@mui/material/FormGroup"
 import FormLabel from "@mui/material/FormLabel"
 import TextField from "@mui/material/TextField"
 import Button from "@mui/material/Button"
-import { useFormik } from "formik";
-import { Navigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../store/store"
-import { loginTC } from "../../state/auth-reducer"
 
 type ErrorType = {
   email?: string
@@ -18,23 +19,23 @@ type ErrorType = {
 }
 
 export type LoginType = {
-  email: string,
-  password: string,
-  rememberMe: boolean,
+  email: string
+  password: string
+  rememberMe: boolean
 }
 
 export const Login = () => {
   const dispatch = useAppDispatch()
-  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+  const isLoggedIn = useSelector(selectIsLoggedIn)
 
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
-      rememberMe: false,
+      rememberMe: false
     },
     validate: (values) => {
-      const errors: ErrorType = {};
+      const errors: ErrorType = {}
       const isNotValid = !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
 
       if (!values.email) {
@@ -49,13 +50,13 @@ export const Login = () => {
         errors.password = "Must be more 4 symbols"
       }
 
-      return errors;
+      return errors
     },
-    onSubmit: values => {
+    onSubmit: (values) => {
       dispatch(loginTC(values))
-      formik.resetForm();
-    },
-  });
+      formik.resetForm()
+    }
+  })
 
   if (isLoggedIn) {
     return <Navigate to={"/todolists"} />
@@ -66,7 +67,12 @@ export const Login = () => {
       <Grid item justifyContent={"center"}>
         <FormControl>
           <FormLabel>
-            <p>To log in get registered <a href={"https://social-network.samuraijs.com/"} target={"_blank"} rel="noreferrer">here</a></p>
+            <p>
+              To log in get registered{" "}
+              <a href={"https://social-network.samuraijs.com/"} target={"_blank"} rel="noreferrer">
+                here
+              </a>
+            </p>
             <p>or use common test account credentials:</p>
             <p>Email: vitalii.hryshko.rss@gmail.com</p>
             <p>Password: pro100</p>
@@ -95,7 +101,9 @@ export const Login = () => {
                 label={"Remember me"}
                 control={<Checkbox checked={formik.values.rememberMe} {...formik.getFieldProps("rememberMe")} />}
               />
-              <Button type={"submit"} variant={"contained"} color={"primary"}>Login</Button>
+              <Button type={"submit"} variant={"contained"} color={"primary"}>
+                Login
+              </Button>
             </FormGroup>
           </form>
         </FormControl>

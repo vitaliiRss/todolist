@@ -1,22 +1,23 @@
-import React from "react"
-import ButtonAppBar from "./components/ButtonAppBar/ButtonAppBar";
-import LinearProgress from "@mui/material/LinearProgress";
-import Container from "@mui/material/Container";
-import CustomizedSnackbars from "./components/ErrorSnackbar/ErrorSnackbar";
-import { useAppDispatch, useAppSelector } from "./store/store";
-import { Outlet } from "react-router-dom";
-import { CircularProgress } from "@mui/material";
-import { useEffect } from "react";
-import { meTC } from "./state/auth-reducer";
+import React, { useEffect } from "react"
+import { useSelector } from "react-redux"
+import { Outlet } from "react-router-dom"
+import { useAppDispatch } from "./store/store"
+import { selectIsInitialized, selectStatus } from "./state/app-slice"
+import { meTC } from "./state/auth-slice"
+import ButtonAppBar from "./components/ButtonAppBar/ButtonAppBar"
+import LinearProgress from "@mui/material/LinearProgress"
+import Container from "@mui/material/Container"
+import CircularProgress from "@mui/material/CircularProgress"
+import CustomizedSnackbars from "./components/ErrorSnackbar/ErrorSnackbar"
 
 export const App = () => {
-  const dispatch = useAppDispatch();
-  const status = useAppSelector(state => state.app.status)
-  const isInitialized = useAppSelector<boolean>((state) => state.app.isInitialized)
+  const dispatch = useAppDispatch()
+  const status = useSelector(selectStatus)
+  const isInitialized = useSelector(selectIsInitialized)
 
   useEffect(() => {
     dispatch(meTC())
-  }, [dispatch])
+  }, [])
 
   if (!isInitialized) {
     return (
