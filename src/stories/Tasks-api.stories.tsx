@@ -104,7 +104,7 @@ export const DeleteTask = () => {
     const todolistId = "b67ac3de-87ac-432b-ae66-28d741729e16"
     const taskId = "ec1c62e0-3c82-428f-8229-5448ede74e56"
 
-    todolistsAPI.deleteTask(todolistId, taskId).then(response => {
+    todolistsAPI.removeTask(todolistId, taskId).then(response => {
       setState(response.data)
     }).catch(error => {
       setError(error.message)

@@ -2,7 +2,6 @@ import React, { memo, useCallback, useEffect, useMemo } from "react"
 import { useAppDispatch } from "../../store/store"
 import { TaskStatuses, TaskType } from "../../api/todolist-api"
 import { FilterValuesType } from "../../state/todolists-slice"
-import { fetchTasksTC } from "../../state/tasks-slice"
 import { RequestStatusType } from "../../state/app-slice"
 import { AddItemForm } from "../../components/AddItemForm/AddItemForm"
 import { EditableSpan } from "../../components/EditableSpan/EditableSpan"
@@ -12,6 +11,7 @@ import DeleteIcon from "@mui/icons-material/Delete"
 import Box from "@mui/material/Box"
 import { Task } from "../Task/Task"
 import { ButtonContainer } from "../../components/ButtonContainer/ButtonContainer"
+import { tasksThunks } from "../../state/tasks-slice"
 
 type PropsType = {
   todolistId: string
@@ -34,7 +34,7 @@ export const Todolist = memo((props: PropsType) => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(fetchTasksTC(props.todolistId))
+    dispatch(tasksThunks.fetchTasks(props.todolistId))
   }, [])
 
   const removeTodolist = useCallback(() => {

@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux"
 import { useAppDispatch } from "../../store/store"
-import { LogOutTC, selectIsLoggedIn } from "../../state/auth-slice"
+import { authThunks, selectIsLoggedIn } from "../../state/auth-slice"
 import AppBar from "@mui/material/AppBar"
 import Box from "@mui/material/Box"
 import Toolbar from "@mui/material/Toolbar"
@@ -13,7 +13,7 @@ export default function ButtonAppBar() {
   const isLoggedIn = useSelector(selectIsLoggedIn)
 
   const logOut = () => {
-    dispatch(LogOutTC())
+    dispatch(authThunks.logOut())
   }
 
   return (

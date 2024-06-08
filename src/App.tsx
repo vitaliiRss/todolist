@@ -3,12 +3,12 @@ import { useSelector } from "react-redux"
 import { Outlet } from "react-router-dom"
 import { useAppDispatch } from "./store/store"
 import { selectIsInitialized, selectStatus } from "./state/app-slice"
-import { meTC } from "./state/auth-slice"
 import ButtonAppBar from "./components/ButtonAppBar/ButtonAppBar"
 import LinearProgress from "@mui/material/LinearProgress"
 import Container from "@mui/material/Container"
 import CircularProgress from "@mui/material/CircularProgress"
 import CustomizedSnackbars from "./components/ErrorSnackbar/ErrorSnackbar"
+import { authThunks } from "./state/auth-slice"
 
 export const App = () => {
   const dispatch = useAppDispatch()
@@ -16,7 +16,7 @@ export const App = () => {
   const isInitialized = useSelector(selectIsInitialized)
 
   useEffect(() => {
-    dispatch(meTC())
+    dispatch(authThunks.me())
   }, [])
 
   if (!isInitialized) {

@@ -2,7 +2,7 @@ import React from "react"
 import { useSelector } from "react-redux"
 import { Navigate } from "react-router-dom"
 import { useAppDispatch } from "../../store/store"
-import { loginTC, selectIsLoggedIn } from "../../state/auth-slice"
+import { authThunks, selectIsLoggedIn } from "../../state/auth-slice"
 import { useFormik } from "formik"
 import Grid from "@mui/material/Grid"
 import Checkbox from "@mui/material/Checkbox"
@@ -53,7 +53,7 @@ export const Login = () => {
       return errors
     },
     onSubmit: (values) => {
-      dispatch(loginTC(values))
+      dispatch(authThunks.logIn(values))
       formik.resetForm()
     }
   })
